@@ -4,9 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>D3 Bar Chart</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.js"></script>
 </head>
 <body>
+    <h1>SVG</h1>
+    <svg width="500" height="250">
+        <rect x="0" y="0" width="100" height="50"/>
+        
+        <circle cx="100" cy="25" r="20" fill="blue" />
+        
+        <rect x="10" y="110" width="400" height="100" style="fill:rgb(0,0,255);stroke-width:10;stroke:rgb(0,0,0)" />
+    </svg>
+    
+    <h1>D3 Bar Chart</h1>
+    <div id="draw-here"></div>
+    
+    <script>
+        let h=500;
+        let w=500;
+        let barPadding=1;
+        
+        let dataset=[400,200,230,50];
+        let colWidth=w/dataset.length; 
+        let barWidth=colWidth-barPadding;
+        
+        let svg=d3.select("#draw-here")
+                .append("svg")
+                .attr("height",h)
+                .attr("width",w);
+        
+        svg.selectAll("rect")
+            .data(dataset)
+            .enter()
+            .append("rect")
+            .attr("x",function(d,i) {
+                return i*colWidth;
+            })
+            .attr("y",function(d) {
+                return h-d;
+            })
+            .attr("height", function(d) {
+                return d;
+            })
+            .attr("width", barWidth);
+        
+        svg.selectAll("text")
+            .data(dataset)
+            .enter()
+            .append("text")
+            .text(function(d) {
+                return d;
+            })
+            .attr("text-anchor","middle")
+            .attr("x", function(d,i) {
+                return i*colWidth + barWidth/2;
+            })
+            .attr("y", function(d) {
+                return h-d+14;
+            })
+            .attr("fill","white");
+    </script>
     
 </body>
 </html>
